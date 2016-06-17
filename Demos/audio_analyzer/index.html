@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .level{
+            width: 8px;
+            height: 300px;
+            transform: translateX(300px);
+            display: block;
+        }
+        .head{
+            width: 8px;
+            height: 5px;
+            margin-bottom: 5px;
+            transition: all linear 0.2s;
+            display: block;
+        }
+        .levelWrapper{
+            width: 8px;
+            margin-left: 2px;
+            height: 320px;
+            display: inline-block;
+        }
+        #stage{
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+            display: block;
+            flex-wrap: wrap-reverse;
+        }
+    </style>
+</head>
+<body>
+<button onclick="pause()">Pause</button>
+<progress id="progress"></progress>
+<div id="stage"></div>
+<script src="app.js"></script>
+</body>
+</html>

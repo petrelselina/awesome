@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<button onclick="console.log(qksort(initData,0,initData.length-1))">qksort</button>
+<script>
+    var initData = [3, 8, 5, 2, 5, 3, 0, 5, 3, 1, 2, 6, 4, 0, 8, 7];
+    function qksort(data, left, right) {
+        var key, low, high;
+        if (left < right) {
+            key = data[left];
+            low = left;
+            high = right;
+            while (low < high) {
+                while (low < high && data[high] >= key) {
+                    high--;
+                }
+                while (low < high && data[low] <= key) {
+                    low++;
+                }
+                if (low < high) {
+                    data[low] = data[low] ^ data[high];
+                    data[high] = data[low] ^ data[high];
+                    data[low] = data[low] ^ data[high];
+                }
+            }
+            data[left]=data[low];
+            data[low]=key;
+
+            qksort(data,left,low-1);
+            qksort(data,high+1,right);
+        }
+        return data;
+    }
+</script>
+</body>
+</html>

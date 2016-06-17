@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style>
+        .wrap {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin: -100px -50px;
+            height: 100px;
+            width: 100px;
+            background-color: white;
+        }
+
+        .rect {
+            position: absolute;
+            bottom: 0px;
+            width: 9px;
+            height: 5px;
+            border: none;
+            margin: 0px;
+            padding: 0px;
+            background-color: #9b59b6;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="rect"></div>
+        <div class="rect"></div>
+        <div class="rect"></div>
+        <div class="rect"></div>
+        <div class="rect"></div>
+    </div>
+    <script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>
+    <script>
+        var rects = $(".wrap").children(), isRun = false;
+        function loop(obj, delay) {
+                obj.delay(delay).animate({
+                    height: "25px",
+                    bottom: "-10px",
+                }, 500).animate({
+                    height: "5px",
+                    bottom: "0px",
+                }, 500, function () {
+                    loop($(this), 1200);
+                });
+            }
+        function runRects() {
+            rects.each(function (i, item) {
+                item = $(item);
+                item.css("left", (i * 11) + "px");
+                loop($(item), i * 300);
+            });
+        }
+        $(runRects());
+    </script>
+</body>
+</html>

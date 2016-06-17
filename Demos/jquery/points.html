@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>
+    <style>
+        .wrap {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin: -50px;
+            height: 100px;
+            width: 100px;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        .point {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            position: absolute;
+            margin: 0px;
+            padding: 0px;
+            border: none;
+            top: 15px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="cover">
+
+        <div class="wrap" id="pointAnimation">
+            <div class="point "></div>
+            <div class="point"></div>
+            <div class="point"></div>
+            <div class="point"></div>
+            <div class="point"></div>
+        </div>
+    </div>
+    <script>
+
+        function loop(obj, delay) {
+            obj.delay(delay).animate({
+                top: "0px"
+            }, 800)
+                .animate({ top: "15px" }, 800,
+                function () {
+                    loop($(this), 0)
+                });
+        }
+        function runPoints() {
+            var a = $(".wrap").children()
+            a.each(function (i, item) {
+                item = $(item);
+                item.css("left", (i * 12 + 5) + "px");
+                switch (i) {
+                    case 0: item.css("background-color", "#e218f8"); break;
+                    case 1: item.css("background-color", "#fb7283"); break;
+                    case 2: item.css("background-color", "#356afb"); break;
+                    case 3: item.css("background-color", "#4cff00"); break;
+                    case 4: item.css("background-color", "#fe1656"); break;
+                }
+                loop(a.eq(i), i * 320);
+            });
+        }
+        $(runPoints());
+
+    </script>
+</body>
+</html>

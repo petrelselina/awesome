@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Web 3D 入门</title>
+</head>
+<style>
+    .stage {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -200px -200px;
+        width: 400px;
+        height: 400px;
+        perspective: 500px;
+        perspective-origin: 10% 10%;
+    }
+
+    .container {
+        transform-style: preserve-3d;
+    }
+
+    .container div {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        color: white;
+        border: solid #ffef4c 2px;
+        font-size: 100px;
+        word-break: break-all;
+    }
+
+    .description {
+        text-align: center;
+        color: #7e2015;
+    }
+
+    #floor {
+        transform: rotateX(90deg);
+        background-color: lightseagreen;
+    }
+
+    #wall_left {
+        transform: translateX(-100px) translateY(-100px) rotateX(90deg) rotateY(90deg);
+        background-color: #b23239;
+    }
+
+    #wall_right {
+        transform: translateX(100px) translateY(-100px) rotateX(90deg) rotateY(90deg);
+        background-color: #12b21b;
+    }
+
+    #top {
+        transform: translateY(-200px) rotateX(90deg);
+        background-color: #a65efe;
+    }
+</style>
+<body>
+<div class="description">
+    <h1>Use directiion keys to change your position and "+" "-" to change your distance.</h1>
+</div>
+
+<div class="stage">
+    <div class="container">
+        <div id="wall_left">Hello</div>
+        <div id="floor">World</div>
+        <div id="wall_right">Hello</div>
+        <div id="top">World</div>
+    </div>
+</div>
+<script>
+    var LEFT = 37, RIGHT = 39, UP = 38, DOWN = 40, PLUS = 187, MINUS = 189,
+            container = Q(".stage")[0],
+            perspective = 500, originX = 10, originY = 10;
+    document.addEventListener("keydown", function (event) {
+        switch (event.keyCode) {
+            case LEFT:
+                originX -= 10;
+                break;
+            case RIGHT:
+                originX += 10;
+                break;
+            case UP:
+                originY -= 10;
+                break;
+            case DOWN:
+                originY += 10;
+                break;
+            case PLUS:
+                perspective -= 50;
+                break;
+            case MINUS:
+                perspective += 50;
+        }
+        perspective = perspective < 50 ? 50 : perspective;
+        container.style.perspective = perspective + "px";
+        container.style["perspective-origin"] = originX + "% " + originY + "%";
+    });
+
+    function Q(selector) {
+        if (selector.charAt(0) == "#") {
+            return document.getElementById(selector.slice(1, selector.length));
+        }
+        if (selector.charAt(0) == ".") {
+            return document.getElementsByClassName(selector.slice(1, selector.length));
+        }
+    }
+</script>
+</body>
+</html>
