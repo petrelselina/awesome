@@ -33,8 +33,14 @@
     </style>
 </head>
 <body>
-<button onclick="pause()">STOP</button>
-<progress id="progress"></progress>
+<div class="control-container">
+    <label>Choose a file to play:</label>
+    <input type="file" id="localRes"/>
+    <label>Or</label>
+    <button onclick="ctx.initWebResource()">Play Web Example</button>
+    <label>Web Resource load-progerss:</label><progress id="progress"></progress>
+    <button onclick="ctx.disconnect()">Disconnect</button>
+</div>
 <div id="stage"></div>
 <script src="app.js"></script>
 </body>

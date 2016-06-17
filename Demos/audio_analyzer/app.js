@@ -5,7 +5,7 @@ var ctx = {
   init: function () {
     var _this = this;
     console.log(this);
-    _this.progress= document.getElementById('progress');
+    _this.progress = document.getElementById('progress');
     _this.stage = document.getElementById('stage');
 
     _this.context = new AudioContext();
@@ -16,22 +16,58 @@ var ctx = {
 
     _this.node = _this.context.createScriptProcessor(2048, 1, 1);
     _this.node.onaudioprocess = _this._handleAudioData.bind(_this);
-    _this.analyzer.connect(_this.node);
-    _this.node.connect(_this.context.destination);
 
     _this.source = _this.context.createBufferSource();
+
+    _this.localRes = document.getElementById('localRes');
+    _this.localRes.onchange = function () {
+      _this.initLocalResource();
+    };
+  },
+  connect: function () {
+    var _this = this;
+    if (_this.source.buffer) {
+      _this.disconnect();
+      _this.source = _this.context.createBufferSource();
+    }
+    _this.analyzer.connect(_this.node);
+    _this.node.connect(_this.context.destination);
     _this.source.connect(_this.analyzer);
     _this.analyzer.connect(_this.context.destination);
-    
-    _this._initWebResource();
-
   },
-  _initWebResource: function () {
+  disconnect: function () {
     var _this = this;
+    _this.source.stop();
+    _this.source.disconnect();
+    _this.node.disconnect();
+    _this.analyzer.disconnect();
+  },
+  initLocalResource: function () {
+    var _this = this;
+    var fr = new FileReader();
+    _this.connect();
+    fr.onload = function (e) {
+      console.log('audio loaded');
+      _this.context.decodeAudioData(e.target.result, function (buffer) {
+        if (_this.source.buffer) {
+          _this.disconnect();
+          _this.source = _this.context.createBufferSource();
+        }
+        _this.source.buffer = buffer;
+        _this.source.loop = true;
+        _this.source.start(0);
+      }, function (e) {
+        console.log("!哎玛，文件解码失败:(");
+      });
+    }
+    fr.readAsArrayBuffer(_this.localRes.files[0]);
+  },
+  initWebResource: function () {
+    var _this = this;
+    _this.connect();
     _this.xhr = new XMLHttpRequest();
     _this.xhr.onload = function () {
       _this.context.decodeAudioData(_this.xhr.response, function (b) {
-        console.log('audio loaded');
         _this.source.buffer = b;
         _this.source.loop = true;
         _this.source.start(0);
@@ -51,7 +87,7 @@ var ctx = {
     var array = new Uint8Array(len);
     _this.analyzer.getByteFrequencyData(array);
     var newArray = array.filter(function (item, i) {
-      return (i+1) % 10 === 0;
+      return (i + 1) % 10 === 0;
     });
     if (_this.stage.childNodes.length < newArray.length) {
       var frag = document.createDocumentFragment();
@@ -115,9 +151,3 @@ var ctx = {
 };
 
 ctx.init();
-function pause() {
-  ctx.source.stop();
-  ctx.source.disconnect();
-  ctx.node.disconnect();
-  ctx.analyzer.disconnect();
-}

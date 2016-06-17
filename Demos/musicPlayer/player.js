@@ -350,8 +350,7 @@ $(function () {
         },
         error: function (msg) {
             alert(msg);
-        }
-
+        },
     });
 });
 
